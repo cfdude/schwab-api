@@ -168,7 +168,7 @@ const instruction = z.enum([
 	'SELL_SHORT_EXEMPT',
 ])
 const activityType = z.enum(['EXECUTION', 'ORDER_ACTION'])
-const executionType = z.enum(['FILL'])
+const executionType = z.enum(['FILL']).or(z.string())
 const orderLegType = z.enum([
 	'EQUITY',
 	'OPTION',

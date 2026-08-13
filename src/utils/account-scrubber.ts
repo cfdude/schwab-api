@@ -152,8 +152,9 @@ export function scrubAccountIdentifiers<T>(
 
 			// First pass: look for account identifiers
 			for (const [key, val] of Object.entries(value)) {
-				if (scrubFields.includes(key) && typeof val === 'string') {
-					const display = displayMap[val]
+				if (scrubFields.includes(key) && (typeof val === 'string' || typeof val === 'number')) {
+					const lookupKey = String(val)
+					const display = displayMap[lookupKey]
 					if (display) {
 						accountDisplay = display
 					}

@@ -234,8 +234,20 @@ const Product = TransactionBaseInstrument.extend({
 	type: z.enum(['TBD', 'UNKNOWN']).optional(),
 })
 
-// Replace placeholder with the correct discriminated union
-const TransactionInstrument = z.discriminatedUnion('assetType', [
+// Fallback for unknown/unexpected asset types from Schwab API
+// This catches any instrument that doesn't match the known types
+const UnknownInstrument = z.object({
+	assetType: z.string(), // Accept any string assetType
+	cusip: z.string().optional(),
+	symbol: z.string().optional(),
+	description: z.string().optional(),
+	instrumentId: z.number().int().optional(),
+	netChange: z.number().optional(),
+}).passthrough() // Allow additional unknown fields
+
+// Use union with fallback instead of discriminatedUnion to handle unknown asset types
+// The order matters - specific types are tried first, UnknownInstrument catches the rest
+const TransactionInstrument = z.union([
 	TransactionCashEquivalent,
 	CollectiveInvestment,
 	Currency,
@@ -247,6 +259,7 @@ const TransactionInstrument = z.discriminatedUnion('assetType', [
 	TransactionMutualFund,
 	TransactionOption,
 	Product,
+	UnknownInstrument, // Fallback for any unrecognized asset types
 ])
 
 const TransferItem = z.object({

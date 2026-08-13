@@ -52,7 +52,7 @@ export const OptionDeliverablesSchema = z.object({
 		.describe('Units of the deliverable'),
 	currencyType: z
 		.string()
-		.optional()
+		.nullish()
 		.describe('Currency type of the deliverable'),
 })
 export type OptionDeliverablesSchema = z.infer<typeof OptionDeliverablesSchema>
@@ -289,7 +289,7 @@ export const OptionChainSchema = z.object({
 		.string()
 		.optional()
 		.describe('Status of the request (e.g., SUCCESS)'),
-	underlying: UnderlyingSchema.optional().describe(
+	underlying: UnderlyingSchema.nullish().describe(
 		'Details of the underlying instrument',
 	),
 	strategy: OptionStrategyEnum.optional().describe(
